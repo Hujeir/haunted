@@ -1,0 +1,57 @@
+<h1 class="page-header">Staff Management</h1>
+<a href="/" class="back-link">← Back to Home</a>
+
+<div class="table-container"> 
+    <table id="staffTable" class="spooky-table" data-turbo="false">
+        <thead>
+            <tr>
+                <th class="sortable" data-col="name">Name <span class="arrow">↑↓</span></th>
+                <th class="sortable" data-col="department">Department <span class="arrow">↑↓</span></th>
+                <th class="sortable" data-col="years">Years of Service <span class="arrow">↑↓</span></th>
+                <th class="sortable" data-col="status">Status <span class="arrow">↑↓</span></th>
+            </tr>
+            </thead>
+
+            <tbody>
+                <% @staff_members.each do |staff| %>
+                    <tr>
+                        <td class="name"><%= staff.name %></td>
+                        <td class="department"><%= staff.department %></td>
+                        <td class="years"><%= staff.years_of_service %></td>
+                        <td class="status"><%= staff.employment_status %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+ </div>
+
+<script>
+  let direction = 1;
+
+  document.querySelectorAll(".sortable").forEach(header => {
+    header.addEventListener("click", () => {
+      sortTable(header.dataset.col);
+      direction = -direction;
+    });
+  });
+
+  function sortTable(column) {
+    const table = document.getElementById("staffTable");
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+    rows.sort((a, b) => {
+      let valA = a.querySelector("." + column).textContent.trim();
+      let valB = b.querySelector("." + column).textContent.trim();
+
+      if (!isNaN(valA)) { valA = Number(valA); }
+      if (!isNaN(valB)) { valB = Number(valB); }
+
+      return valA > valB ? direction : -direction;
+    });
+
+    rows.forEach(row => {
+      table.querySelector("tbody").appendChild(row);
+    });
+  }
+</script>
+
