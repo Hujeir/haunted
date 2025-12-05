@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: haunted-hotel-app
+    env: ruby
+    plan: free
+    buildCommand: bundle install && bundle exec rake assets:precompile db:migrate
+    startCommand: bundle exec puma -C config/puma.rb
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false
